@@ -27,13 +27,13 @@ public class Deck {
 	 * get cards from deck "without replacement", we swap the random element
 	 * with last element to get 5 distinct objects from the array.
 	 */
-	public Card[] select(int k) {
+	public Card[] select(int k,int x) {
 		Random r = new Random();
 		Card[] distribute = new Card[k];
 		for (int i = 0; i < k; i++) {
-			int j = r.nextInt(cards.length- i);
+			int j = r.nextInt(cards.length- i-x);
 			distribute[i] = cards[j];
-			swap(cards, 29 - i, j);
+			swap(cards, 29 - i-x, j);
 		}
 		return distribute;
 	}
