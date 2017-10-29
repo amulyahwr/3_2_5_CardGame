@@ -3,6 +3,7 @@ package cardGame;
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class CardGame {
 
 	private static Card[] agent;
@@ -68,12 +69,8 @@ public class CardGame {
 		}
 		return DisCards;
 	}
-<<<<<<< HEAD
-		
-	public Suit Decide_Trump(){
-=======
+
 	public String Decide_Trump(){
->>>>>>> master
 		
 		int cs=0,cd=0,ch=0,cc=0;
 		for(int i=0;i<5;i++) {
