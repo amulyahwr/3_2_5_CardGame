@@ -16,7 +16,9 @@ public class CardGame {
 		player1=new Card[10];
 		player2=new Card[10];
 		player3=new Card[10];
-		dealer=r.nextInt(3);    
+		dealer=r.nextInt(3); 
+		System.out.println("Player "+dealer+" is dealer");
+		System.out.println("Player "+dealer+" is dealer");
 	}
 	
 	public static void main(String[] args) {
