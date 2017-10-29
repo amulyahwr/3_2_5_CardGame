@@ -36,15 +36,14 @@ public class Card
   /**
    * The four suits.
    */
-  public enum Suit
-  {
-    C, D, H, S
-  };
+ 
+    String[] Suit= {"S","H","C","D"};
+  
 
   /**
    * Suit for this card.
    */
-  private final Suit suit;
+  private final String suit;
 
   /**
    * Rank for this card.
@@ -66,7 +65,7 @@ public class Card
    * @param givenSuit
    *          suit for this card
    */
-  public Card(int givenRank, Suit givenSuit)
+  public Card(int givenRank, String givenSuit)
   {
     rank = givenRank;
     suit = givenSuit;
@@ -87,7 +86,7 @@ public class Card
    * 
    * @return suit for this card
    */
-  public Suit getSuit()
+  public String getSuit()
   {
     return suit;
   }

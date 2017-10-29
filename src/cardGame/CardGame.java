@@ -3,8 +3,6 @@ package cardGame;
 import java.util.Arrays;
 import java.util.Random;
 
-import cardGame.Card.Suit;
-
 public class CardGame {
 
 	private static Card[] agent;
@@ -47,8 +45,12 @@ public class CardGame {
 			player3[i]=hand[i];
 		}
 	}
-	public Suit Decide_Trump(){
+	public String Decide_Trump(){
 		
+		int cs=0,cd=0,ch=0,cc=0;
+		for(int i=0;i<5;i++) {
+			if(agent[i].getSuit().equals("S"));
+		}
 		return null;
 	}
 }
