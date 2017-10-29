@@ -2,6 +2,7 @@ package cardGame;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 
 public class CardGame {
@@ -42,6 +43,11 @@ public class CardGame {
 		System.out.println("Agent cards are "+Arrays.toString(agent));
 		System.out.println("Player 2 cards are "+Arrays.toString(player2));
 		System.out.println("Player 3 cards are "+Arrays.toString(player3));
+		
+		c.getInputfromPlayers(new Card[3],1);
+		System.out.println("Agent cards are "+Arrays.toString(agent));
+		System.out.println("Player 2 cards are "+Arrays.toString(player2));
+		System.out.println("Player 3 cards are "+Arrays.toString(player3));
 	}
 	
 	/**
@@ -77,5 +83,36 @@ public class CardGame {
 			if(agent[i].getSuit().equals("S"));
 		}
 		return null;
+	}
+	
+	/**
+	 * This will take input from players by asking the cards they want to play through scanner
+	 * @param runningCards : 3 cards which are getting played
+	 * @param turn: specifies the turn, which player ha to play now 
+	 */
+	public Card[] getInputfromPlayers(Card[] runningCards,int turn){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
+		int rank1=sc.nextInt();
+		String suit1=sc.next();
+		Card c1=new Card(rank1,suit1);
+		for(int i=0;i<player2.length;i++){
+			if(player2[i].getRank()==c1.getRank() && player2[i].getSuit().equals(c1.getSuit())){
+				runningCards[turn++]=c1;
+				player2[i]=null;
+			}
+		}
+		
+		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
+		int rank2=sc.nextInt();
+		String suit2=sc.next();
+		Card c2=new Card(rank2,suit2);
+		for(int i=0;i<player2.length;i++){
+			if(player3[i].getRank()==c2.getRank() && player3[i].getSuit().equals(c2.getSuit())){
+				runningCards[turn]=c2;
+				player3[i]=null;
+			}
+		}
+		return runningCards;
 	}
 }
