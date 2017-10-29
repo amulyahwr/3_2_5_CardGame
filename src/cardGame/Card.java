@@ -38,7 +38,7 @@ public class Card
    */
   public enum Suit
   {
-    CLUBS, DIAMONDS, HEARTS, SPADES
+    C, D, H, S
   };
 
   /**
@@ -55,9 +55,8 @@ public class Card
    * Names used for displaying strings.
    */
   //element 0 not used
-  private final String[] NAMES = {"Dummy", 
-    "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
-    "Ten", "Jack", "Queen", "King"};
+  private final String[] NAMES = {"D","D","D","D","D","D","D",
+		  "7", "8", "9","10", "J", "Q", "K","A"};
 
   /**
    * Constructs a card with the given rank and suit. Ranks are in the range 1 through 13.
@@ -98,7 +97,7 @@ public class Card
    */
   public String toString()
   {
-    return NAMES[rank] + " of " + suit;
+    return NAMES[rank] + " " + suit;
   }
 
   /**

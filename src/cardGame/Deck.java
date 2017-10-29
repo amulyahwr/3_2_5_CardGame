@@ -31,9 +31,9 @@ public class Deck {
 		Random r = new Random();
 		Card[] distribute = new Card[k];
 		for (int i = 0; i < k; i++) {
-			int j = r.nextInt(cards.length - 1 - i);
+			int j = r.nextInt(cards.length- i);
 			distribute[i] = cards[j];
-			swap(cards, 51 - i, j);
+			swap(cards, 29 - i, j);
 		}
 		return distribute;
 	}
@@ -49,18 +49,23 @@ public class Deck {
 	 * Initializes a new deck of 52 cards.
 	 */
 	private void init() {
-		cards = new Card[52];
+		cards = new Card[30];
 		int index = 0;
-		for (int rank = 1; rank <= 13; ++rank) {
-			cards[index] = new Card(rank, Suit.CLUBS);
+		cards[index] = new Card(7, Suit.C);
+		index += 1;
+		cards[index] = new Card(7, Suit.D);
+		index += 1;
+		for (int rank = 8; rank <= 14; ++rank) {
+			cards[index] = new Card(rank, Suit.C);
 			index += 1;
-			cards[index] = new Card(rank, Suit.DIAMONDS);
+			cards[index] = new Card(rank, Suit.D);
 			index += 1;
-			cards[index] = new Card(rank, Suit.HEARTS);
+			cards[index] = new Card(rank, Suit.H);
 			index += 1;
-			cards[index] = new Card(rank, Suit.SPADES);
+			cards[index] = new Card(rank, Suit.S);
 			index += 1;
 		}
+		
 
 	}
 }
