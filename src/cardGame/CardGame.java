@@ -12,6 +12,7 @@ public class CardGame {
 	private static Deck deck;
 	int[] table_cards = new int[3];
 	static int round = 0;
+	private static String trump;
 	
 	public CardGame() {
 		deck = new Deck();
@@ -31,8 +32,10 @@ public class CardGame {
 
 		DisCards = c.DistributeCards(5, DisCards, HandCards);
 		HandCards += 5;
-
-		c.Decide_Trump();
+		
+		trump=c.Decide_Trump();
+		System.out.println(trump);
+				
 
 		// distribute 3 more cards
 		DisCards = c.DistributeCards(3, DisCards, HandCards);
@@ -70,7 +73,9 @@ public class CardGame {
 		for (int i = 0; i < hand.length; i++) {
 			agent[i + HandCards] = hand[i];
 			DisCards++;
+			
 		}
+		
 		hand = deck.select(k, DisCards);
 		for (int i = 0; i < hand.length; i++) {
 			player2[i + HandCards] = hand[i];
@@ -84,16 +89,71 @@ public class CardGame {
 		return DisCards;
 	}
 
+	/**
+	 * returns and assigns value to the  global Trump variable
+	 */
 	public String Decide_Trump() {
-
-		int cs = 0, cd = 0, ch = 0, cc = 0;
+		int count[] = new int[4];
+		//
 		for (int i = 0; i < 5; i++) {
 			if (agent[i].getSuit().equals("S"))
-				;
+				count[0]++;
+			else if (agent[i].getSuit().equals("H"))
+				count[1]++;
+			else if (agent[i].getSuit().equals("C"))
+				count[2]++;
+			else
+				count[3]++;
 		}
-		return null;
-	}
 
+		// find max value
+		int max = 0;
+		for (int i = 0; i < 4; i++) {
+			if (count[i] >= max)
+				max = i;
+		}
+
+		if (count[max] != 2) {
+			switch (max) {
+			case 0:
+				trump = "S";
+			case 1:
+				trump = "H";
+			case 2:
+				trump = "C";
+			case 3:
+				trump = "D";
+			}
+		}
+		// if max value=2, then consider the values of cards
+		else {
+			// fetch index of count==2
+			int i1 = 0, i2 = 0;
+			boolean f = false;
+			for (int i = 0; i < 4; i++) {
+				if (count[i] == 2 && !f) {
+					i1 = i;
+					f = true;
+				} else if (f == false)
+					i2 = i;
+			}
+			// Compare the values of cards
+			String[] Suits = { "S", "H", "C", "D" };
+			int val1 = 0, val2 = 0;
+			for (int k = 0; k < 5; k++) {
+				if (agent[k].getSuit().equals(Suits[i1]))
+					val1 += agent[k].getRank();
+				else if (agent[k].getSuit().equals(Suits[i2]))
+					val2 += agent[k].getRank();
+			}
+			if (val1 >= val2)
+				trump = Suits[i1];
+			else
+				trump = Suits[i2];
+		}
+
+		return trump;
+	}
 	/**
 	 * This will take input from players by asking the cards they want to play
 	 * through scanner
