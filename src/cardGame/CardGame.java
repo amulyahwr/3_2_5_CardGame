@@ -11,6 +11,7 @@ public class CardGame {
 	private static Card[] player3;
 	private static Deck deck;
 	int[] table_cards = new int[3];
+	static int round = 0;
 	
 	public CardGame() {
 		deck = new Deck();
@@ -43,11 +44,14 @@ public class CardGame {
 		System.out.println("Agent cards are " + Arrays.toString(agent));
 		System.out.println("Player 2 cards are " + Arrays.toString(player2));
 		System.out.println("Player 3 cards are " + Arrays.toString(player3));
+		
+		round = round + 1;
+		c.first_round(agent, round);
 
-		c.getInputfromPlayers(new Card[3], 1);
-		System.out.println("Agent cards are " + Arrays.toString(agent));
-		System.out.println("Player 2 cards are " + Arrays.toString(player2));
-		System.out.println("Player 3 cards are " + Arrays.toString(player3));
+		//c.getInputfromPlayers(new Card[3], 1);
+		//System.out.println("Agent cards are " + Arrays.toString(agent));
+		//System.out.println("Player 2 cards are " + Arrays.toString(player2));
+		//System.out.println("Player 3 cards are " + Arrays.toString(player3));
 	}
 
 	/**
@@ -124,35 +128,50 @@ public class CardGame {
 		}
 		return runningCards;
 	}
+	/**
+	 * 
+	 * @param agent
+	 * @param round
+	 * @return
+	 */
+	public Card first_round(Card[] agent, int round) {
 
-	public void first_round(Card[] agent) {
-
-		priority(agent);
+		return priority(agent,round);
 
 	}
-
-	public Card priority(Card[] cards_hand) {
-
+	/**
+	 * 
+	 * @param cards_hand
+	 * @param nmbr_round
+	 * @return
+	 */
+	public Card priority(Card[] cards_hand, int nmbr_round) {
 		String suit = null;
-
 		int rank = 0;
+		int prev_rank = 100;
+		int idx = 0;
+		
+		if (nmbr_round ==1) {
+		
+			for (int i = 0; i < cards_hand.length; i++) {
 
-		for (int i = 0; i < cards_hand.length; i++) {
+				suit = cards_hand[i].getSuit();
+				rank = cards_hand[i].getRank();
 
-			suit = cards_hand[i].getSuit();
-
-			rank = cards_hand[i].getRank();
-
-			if (rank == 14) {
-
-				return cards_hand[i];
-
+				if (rank == 14) {
+					return cards_hand[i];
+				}
+				else if (prev_rank > rank && cards_hand[i].getSuit() != trump) {
+					prev_rank = rank;
+					idx = i;
+				}
 			}
 
+			return cards_hand[idx];
 		}
-
-		return new Card(rank, suit);
-
+		else {
+			
+		}
 	}
 
 	public int winner(int[] table_cards) {
