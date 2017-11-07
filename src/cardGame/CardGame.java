@@ -10,7 +10,7 @@ public class CardGame {
 	private static Card[] player2;
 	private static Card[] player3;
 	private static Deck deck;
-	int[] table_cards = new int[3];
+	static Card[] runningCards = new Card[3];
 	static int round = 0;
 	private static String trump;
 	
@@ -49,12 +49,23 @@ public class CardGame {
 		System.out.println("Player 3 cards are " + Arrays.toString(player3));
 		
 		round = round + 1;
-		c.first_round(agent, round);
+		
+		runningCards[0]=c.first_round();
+		System.out.println("Agent played " + runningCards[0]);
 
-		//c.getInputfromPlayers(new Card[3], 1);
-		//System.out.println("Agent cards are " + Arrays.toString(agent));
-		//System.out.println("Player 2 cards are " + Arrays.toString(player2));
-		//System.out.println("Player 3 cards are " + Arrays.toString(player3));
+		c.getInputfromPlayers(1);
+		System.out.println("Agent played " + runningCards[0]);
+		System.out.println("Player 1 played " + runningCards[1]);
+
+		c.getInputfromPlayers(2);
+		
+		System.out.println(Arrays.toString(runningCards));
+		
+		System.out.println("Agent cards are " + Arrays.toString(agent));
+		System.out.println("Player 2 cards are " + Arrays.toString(player2));
+		System.out.println("Player 3 cards are " + Arrays.toString(player3));
+		
+		System.out.println(c.winner());
 	}
 
 	/**
@@ -163,29 +174,36 @@ public class CardGame {
 	 * @param turn:
 	 *            specifies the turn, which player ha to play now
 	 */
-	public Card[] getInputfromPlayers(Card[] runningCards, int turn) {
+	public Card[] getInputfromPlayers(int turn) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
 		int rank1 = sc.nextInt();
 		String suit1 = sc.next();
 		Card c1 = new Card(rank1, suit1);
-		for (int i = 0; i < player2.length; i++) {
-			if (player2[i].getRank() == c1.getRank() && player2[i].getSuit().equals(c1.getSuit())) {
-				runningCards[turn++] = c1;
-				player2[i] = null;
+		Card[] arr=null;
+		if(turn==1) arr=player2;
+		else if(turn==2) arr=player3;
+		
+		for (int i = 0; i < arr.length; i++) {
+			if (arr[i].getRank() == c1.getRank() && arr[i].getSuit().equals(c1.getSuit())) {
+				runningCards[turn] = c1;
+				arr[i] = null;
 			}
 		}
+		if(turn==1) player2=arr;
+		else if(turn==2) player3=arr;
+	
 
-		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
-		int rank2 = sc.nextInt();
-		String suit2 = sc.next();
-		Card c2 = new Card(rank2, suit2);
-		for (int i = 0; i < player2.length; i++) {
-			if (player3[i].getRank() == c2.getRank() && player3[i].getSuit().equals(c2.getSuit())) {
-				runningCards[turn] = c2;
-				player3[i] = null;
-			}
-		}
+//		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
+//		int rank2 = sc.nextInt();
+//		String suit2 = sc.next();
+//		Card c2 = new Card(rank2, suit2);
+//		for (int i = 0; i < player2.length; i++) {
+//			if (player3[i].getRank() == c2.getRank() && player3[i].getSuit().equals(c2.getSuit())) {
+//				runningCards[turn] = c2;
+//				player3[i] = null;
+//			}
+//		}
 		return runningCards;
 	}
 	/**
@@ -194,9 +212,9 @@ public class CardGame {
 	 * @param round
 	 * @return
 	 */
-	public Card first_round(Card[] agent, int round) {
+	public Card first_round() {
 
-		return priority(agent,round);
+		return priority();
 
 	}
 	/**
@@ -205,39 +223,87 @@ public class CardGame {
 	 * @param nmbr_round
 	 * @return
 	 */
-	public Card priority(Card[] cards_hand, int nmbr_round) {
+	public Card priority() {
 		String suit = null;
 		int rank = 0;
 		int prev_rank = 100;
 		int idx = 0;
+		int nmbr_round=round;
+		Card card_played = null;
 		
 		if (nmbr_round ==1) {
 		
-			for (int i = 0; i < cards_hand.length; i++) {
+			for (int i = 0; i < agent.length; i++) {
 
-				suit = cards_hand[i].getSuit();
-				rank = cards_hand[i].getRank();
+				suit = agent[i].getSuit();
+				rank = agent[i].getRank();
 
 				if (rank == 14) {
-					return cards_hand[i];
+					card_played = agent[i];
+					agent[i] = null;
+					return card_played;
 				}
-				else if (prev_rank > rank && cards_hand[i].getSuit() != trump) {
+				else if (prev_rank > rank && agent[i].getSuit() != trump) {
 					prev_rank = rank;
 					idx = i;
 				}
 			}
-
-			return cards_hand[idx];
+			card_played = agent[idx];
+			agent[idx] = null;
+			return card_played;
 		}
 		else {
-			
+			return null;
 		}
 	}
 
-	public int winner(int[] table_cards) {
+	public int winner() {
 
 		int player_win = 0;
-
+		int max = runningCards[0].getRank();
+		int max_trump_rank = 0;
+		String winSuit=runningCards[0].getSuit();
+		int max_non_trump_rank=0;
+		
+		if (runningCards[0].getSuit().equals(runningCards[1].getSuit()) && 
+				runningCards[1].getSuit().equals(runningCards[2].getSuit()) &&
+						runningCards[0].getSuit().equals(runningCards[2].getSuit())) {
+			
+			if (max < runningCards[1].getRank()) {
+				max = runningCards[1].getRank();
+				player_win = 1;
+			}
+			
+			if (max < runningCards[2].getRank()) {
+				max = runningCards[2].getRank();
+				player_win = 2;
+			}
+			
+		}
+		else {
+							
+			for (int i =0; i<runningCards.length;i++) {
+				
+				if (runningCards[i].getSuit().equals(trump)){
+					if (max_trump_rank < runningCards[i].getRank()) {
+						max_trump_rank = runningCards[i].getRank();
+						player_win = i;
+					}
+					
+				}
+				
+				//case 3: when there is non trump & different suits
+				else {
+					if(runningCards[i].getSuit().equals(winSuit) && 
+							runningCards[i].getRank() > runningCards[0].getRank())
+						max_non_trump_rank=runningCards[i].getRank();
+					    player_win=i;
+				}
+				
+			}
+		}
+	
+		
 		return player_win;
 
 	}
