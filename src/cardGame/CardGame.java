@@ -66,6 +66,7 @@ public class CardGame {
 		System.out.println("Player 3 cards are " + Arrays.toString(player3));
 		
 		System.out.println(c.winner());
+
 	}
 
 	/**
@@ -177,7 +178,14 @@ public class CardGame {
 	public Card[] getInputfromPlayers(int turn) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Please enter the rank (INTEGER VALUE) and color (UPPER CASE CHARACTER) you want to play");
-		int rank1 = sc.nextInt();
+		int rank1=0;
+		if(sc.hasNextInt()){
+			rank1=sc.nextInt();
+		}
+		else{
+			String StrRank=sc.next();
+			rank1=StrRank.equalsIgnoreCase("Q") ? 12:StrRank.equalsIgnoreCase("J")?11:StrRank.equalsIgnoreCase("K")?13:1;
+		}
 		String suit1 = sc.next();
 		Card c1 = new Card(rank1, suit1);
 		Card[] arr=null;
