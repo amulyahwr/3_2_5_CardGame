@@ -26,7 +26,7 @@ public class Deck {
 	 * with last element to get 5 distinct objects from the array.
 	 */
 	public Card[] select(int k,int x) {
-		Random r = new Random();
+		Random r = new Random(6);
 		Card[] distribute = new Card[k];
 		for (int i = 0; i < k; i++) {
 			int j = r.nextInt(cards.length- i-x);
